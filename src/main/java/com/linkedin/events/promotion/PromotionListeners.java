@@ -4,6 +4,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.linkedin.events.CustomerRegisteredEvent;
+import com.linkedin.events.order.OrderCompletedEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +17,11 @@ public class PromotionListeners {
 	@EventListener(condition = "#event.customer.newsletter")
 	public void onRegistrationEvent(CustomerRegisteredEvent event) {
 		promotionService.applyPromotion(event.getCustomer());
+	}
+
+	@EventListener
+	public void onOrderCompleted(OrderCompletedEvent event) {
+		promotionService.calculateRewardPoints(event.getOrder());
 	}
 
 }
